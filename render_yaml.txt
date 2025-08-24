@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: youtube-mp3-converter
+    env: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+    disk:
+      name: storage
+      mountPath: /app/downloads
+      sizeGB: 1

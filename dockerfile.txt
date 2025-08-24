@@ -1,0 +1,26 @@
+# Usar Python 3.11 slim
+FROM python:3.11-slim
+
+# Instalar dependencias del sistema incluyendo FFmpeg
+RUN apt-get update && apt-get install -y \
+    ffmpeg \
+    && rm -rf /var/lib/apt/lists/*
+
+# Establecer directorio de trabajo
+WORKDIR /app
+
+# Copiar requirements y instalar dependencias Python
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copiar el código de la aplicación
+COPY . .
+
+# Crear directorios necesarios
+RUN mkdir -p downloads temp
+
+# Exponer puerto
+EXPOSE 5000
+
+# Comando para ejecutar la aplicación
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "app:app"]
